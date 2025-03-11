@@ -14,7 +14,7 @@ namespace Szeminarium1
         private static readonly string VertexShaderSource = @"
         #version 330 core
         layout (location = 0) in vec3 vPos;
-		layout (location = 2) in vec4 vCol;
+		layout (location = 1) in vec4 vCol;
 
 		out vec4 outCol;
         
@@ -128,10 +128,20 @@ namespace Szeminarium1
             };
 
             uint vertices = Gl.GenBuffer();
-            Gl.BindBuffer(GLEnum.ArrayBuffer, vertices);
+            //Gl.BindBuffer(GLEnum.ArrayBuffer, vertices);
             Gl.BufferData(GLEnum.ArrayBuffer, (ReadOnlySpan<float>)vertexArray.AsSpan(), GLEnum.StaticDraw);
             Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, null);
             Gl.EnableVertexAttribArray(0);
+            
+
+            // hibakezelés
+            GLEnum error = Gl.GetError();
+            if (error != GLEnum.NoError)
+            {
+                Console.WriteLine($"OpenGL Error: {error}");
+            }
+            // hibakezelés
+
 
             uint colors = Gl.GenBuffer();
             Gl.BindBuffer(GLEnum.ArrayBuffer, colors);
