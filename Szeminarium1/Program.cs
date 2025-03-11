@@ -14,7 +14,7 @@ namespace Szeminarium1
         private static readonly string VertexShaderSource = @"
         #version 330 core
         layout (location = 0) in vec3 vPos;
-		layout (location = 1) in vec4 vCol;
+		layout (location = 2) in vec4 vCol;
 
 		out vec4 outCol;
         
@@ -76,7 +76,7 @@ namespace Szeminarium1
             Gl.CompileShader(fshader);
 
             program = Gl.CreateProgram();
-            //Gl.AttachShader(program, vshader);
+            Gl.AttachShader(program, vshader);
             Gl.AttachShader(program, fshader);
             Gl.LinkProgram(program);
             Gl.DetachShader(program, vshader);
