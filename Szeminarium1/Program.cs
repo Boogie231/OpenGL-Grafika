@@ -41,9 +41,8 @@ namespace Szeminarium1
         static void Main(string[] args)
         {
             WindowOptions windowOptions = WindowOptions.Default;
-            windowOptions.Title = "1. szeminárium - háromszög- TESZT";
+            windowOptions.Title = "1. szeminárium - háromszög";
             windowOptions.Size = new Silk.NET.Maths.Vector2D<int>(500, 500);
-            
 
             graphicWindow = Window.Create(windowOptions);
 
@@ -74,10 +73,6 @@ namespace Szeminarium1
 
             Gl.ShaderSource(fshader, FragmentShaderSource);
             Gl.CompileShader(fshader);
-            Gl.GetShader(fshader, ShaderParameterName.CompileStatus, out int fStatus);
-            if (fStatus != (int)GLEnum.True)
-                throw new Exception("Fragment shader failed to compile: " + Gl.GetShaderInfoLog(fshader));
-
 
             program = Gl.CreateProgram();
             Gl.AttachShader(program, vshader);
@@ -113,46 +108,88 @@ namespace Szeminarium1
             Gl.BindVertexArray(vao);
 
             float[] vertexArray = new float[] {
-                -0.5f, -0.5f, 0.0f,
-                +0.5f, -0.5f, 0.0f,
-                 0.0f, +0.5f, 0.0f,
-                 1f, 1f, 0f
-            };
+                0f, 0f, 0f, // A
+                0f, -0.5f, 0f, // B
+                0.4f,-0.2f, 0f, // C
+                0.4f, 0.3f, 0f, // D
+
+                // 4-7
+                0f, 0f, 0f, // A
+                -0.4f, 0.3f, 0f, // E
+                -0.4f,-0.2f, 0f, // F
+                0f, -0.5f, 0f, // B
+
+                // 8-11
+                0f, 0f, 0f, // A
+                0.4f, 0.3f, 0f, // D
+                0f, 0.5f, 0, // G
+                -0.4f, 0.3f, 0f // E
+
+
+
+
+                
+                //-0.5f, -0.5f, 0.0f,
+                //+0.5f, -0.5f, 0.0f,
+                // 0.0f, +0.5f, 0.0f,
+                // 1f, 1f, 0f
+                // -0.8f, 0.8f, 0f
+            }; // megadjuk a geometriáink adatait
+               // 4 sor = 4 darab pont
+               // leirja a poziciokat
+               // normalizált eszkozkoordinatakban vannak: a koordinatak -1 es 1 kozottt
+               // 1 koord: 3 db float: vizszintes és függőleges koordináták, illetve mélység (ezt első körben nem használjuk)
+
 
             float[] colorArray = new float[] {
-                1.0f, 1.0f, 0.0f, 1.0f,
-                0.0f, 1.0f, 0.0f, 1.0f,
-                0.0f, 0.0f, 1.0f, 1.0f,
-                1.0f, 0.0f, 0.0f, 1.0f,
+
+                0.651f, 0.067f, 0.067f, 1.0f,
+                0.651f, 0.067f, 0.067f, 1.0f,
+                0.651f, 0.067f, 0.067f, 1.0f,
+                0.651f, 0.067f, 0.067f, 1.0f,
+
+                0.941f, 0.4f, 0.4f, 1.0f,
+                0.941f, 0.4f, 0.4f, 1.0f,
+                0.941f, 0.4f, 0.4f, 1.0f,
+                0.941f, 0.4f, 0.4f, 1.0f,
+
+                0.96f, 0.212f, 0.212f, 1.0f,
+                0.96f, 0.212f, 0.212f, 1.0f,
+                0.96f, 0.212f, 0.212f, 1.0f,
+                0.96f, 0.212f, 0.212f, 1.0f,
+
+
             };
 
-            uint[] indexArray = new uint[] { 
+            uint[] indexArray = new uint[] {
+
                 0, 1, 2,
-                2, 1, 3
+                2, 3, 0,
+
+                4, 5, 6,
+                4, 6, 7,
+
+                8,9, 10,
+                8, 10, 11
+
+                ////0, 1, 2
+                //2, 1, 3
+                ////0, 1, 3
             };
+            // indexarray: a pontokat amit megkapott, azt rajzolásnál hogyan értelmezze?
+            // megadunk egy rajzolasi modot (esetunkben haromszogek), 
 
             uint vertices = Gl.GenBuffer();
             Gl.BindBuffer(GLEnum.ArrayBuffer, vertices);
             Gl.BufferData(GLEnum.ArrayBuffer, (ReadOnlySpan<float>)vertexArray.AsSpan(), GLEnum.StaticDraw);
             Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, null);
             Gl.EnableVertexAttribArray(0);
-            
-
-            // hibakezelés
-            GLEnum error = Gl.GetError();
-            if (error != GLEnum.NoError)
-            {
-                Console.WriteLine($"OpenGL Error: {error}");
-            }
-            // hibakezelés
-
 
             uint colors = Gl.GenBuffer();
             Gl.BindBuffer(GLEnum.ArrayBuffer, colors);
             Gl.BufferData(GLEnum.ArrayBuffer, (ReadOnlySpan<float>)colorArray.AsSpan(), GLEnum.StaticDraw);
             Gl.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, false, 0, null);
             Gl.EnableVertexAttribArray(1);
-            
 
             uint indices = Gl.GenBuffer();
             Gl.BindBuffer(GLEnum.ElementArrayBuffer, indices);
@@ -161,7 +198,7 @@ namespace Szeminarium1
             Gl.BindBuffer(GLEnum.ArrayBuffer, 0);
 
             Gl.UseProgram(program);
-            
+
             Gl.DrawElements(GLEnum.Triangles, (uint)indexArray.Length, GLEnum.UnsignedInt, null); // we used element buffer
             Gl.BindBuffer(GLEnum.ElementArrayBuffer, 0);
             Gl.BindVertexArray(vao);
