@@ -184,13 +184,57 @@ namespace Szeminarium1
 
             float[] lineVertices = new float[]
             {
-                -0.4f, -0.2f, 0f,  // Kezdőpont (F)
-                0.4f, -0.2f, 0f   // Végpont (C)
+                // Függőleges vonalak
+                0.13f, -0.4f, 0f,  // Kezdőpont
+                0.13f, 0.1f, 0f,   // Végpont
+                0.26f, -0.3f, 0f,  // Kezdőpont
+                0.26f, 0.2f, 0f,   // Végpont
+                -0.13f, -0.4f, 0f,  // Kezdőpont
+                -0.13f, 0.1f, 0f,   // Végpont
+                -0.26f, -0.3f, 0f,  // Kezdőpont
+                -0.26f, 0.2f, 0f,   // Végpont
+
+                // Vizszintes vonalak
+                0f, -0.33f, 0f,  // Kezdőpont
+                0.4f, -0.033f, 0f,   // Végpont
+                0f, -0.16f, 0f,  // Kezdőpont
+                0.4f, 0.133f, 0f,   // Végpont
+                0f, -0.33f, 0f,  // Kezdőpont
+                -0.4f, -0.033f, 0f,   // Végpont
+                0f, -0.16f, 0f,  // Kezdőpont
+                -0.4f, 0.133f, 0f,   // Végpont
+
+                // Kocka tetején 1
+                0.13f, 0.1f, 0f,
+                -0.26f, 0.36f, 0f,
+                0.26f, 0.2f, 0f,
+                -0.13f, 0.43f, 0f,
+
+                // Kocka tetején 2
+                -0.13f, 0.1f, 0f,
+                0.26f, 0.36f, 0f,
+                -0.26f, 0.2f, 0f,
+                0.13f, 0.43f, 0f,
+
+
             };
 
             uint[] lineIndices = new uint[]
             {
-                0, 1
+                0, 1,
+                2, 3,
+                4, 5,
+                6, 7,
+                8, 9,
+                10, 11,
+                12, 13,
+                14, 15,
+                16, 17,
+                18, 19,
+                20, 21,
+                22, 23,
+                //24, 25,
+                //26, 27,
             };
 
 
@@ -233,6 +277,7 @@ namespace Szeminarium1
             Gl.UseProgram(program);
 
             // Ez itt fontos:
+            Gl.LineWidth(3.0f);
             Gl.DrawElements(GLEnum.Lines, (uint)lineIndices.Length, GLEnum.UnsignedInt, null);
 
 
