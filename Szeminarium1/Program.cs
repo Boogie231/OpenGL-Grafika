@@ -107,6 +107,9 @@ namespace Szeminarium1
             uint vao = Gl.GenVertexArray();
             Gl.BindVertexArray(vao);
 
+            uint lineVao = Gl.GenVertexArray();
+            Gl.BindVertexArray(lineVao);
+
             float[] vertexArray = new float[] {
                 0f, 0f, 0f, // A
                 0f, -0.5f, 0f, // B
@@ -179,6 +182,19 @@ namespace Szeminarium1
             // indexarray: a pontokat amit megkapott, azt rajzolásnál hogyan értelmezze?
             // megadunk egy rajzolasi modot (esetunkben haromszogek), 
 
+            float[] lineVertices = new float[]
+            {
+                -0.4f, -0.2f, 0f,  // Kezdőpont (F)
+                0.4f, -0.2f, 0f   // Végpont (C)
+            };
+
+            uint[] lineIndices = new uint[]
+            {
+                0, 1
+            };
+
+
+
             uint vertices = Gl.GenBuffer();
             Gl.BindBuffer(GLEnum.ArrayBuffer, vertices);
             Gl.BufferData(GLEnum.ArrayBuffer, (ReadOnlySpan<float>)vertexArray.AsSpan(), GLEnum.StaticDraw);
@@ -203,11 +219,36 @@ namespace Szeminarium1
             Gl.BindBuffer(GLEnum.ElementArrayBuffer, 0);
             Gl.BindVertexArray(vao);
 
+            // vonalak rajzolása:
+            uint lineVbo = Gl.GenBuffer();
+            Gl.BindBuffer(GLEnum.ArrayBuffer, lineVbo);
+            Gl.BufferData(GLEnum.ArrayBuffer, (ReadOnlySpan<float>)lineVertices.AsSpan(), GLEnum.StaticDraw);
+            Gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, null);
+            Gl.EnableVertexAttribArray(0);
+
+            uint lineEbo = Gl.GenBuffer();
+            Gl.BindBuffer(GLEnum.ElementArrayBuffer, lineEbo);
+            Gl.BufferData(GLEnum.ElementArrayBuffer, (ReadOnlySpan<uint>)lineIndices.AsSpan(), GLEnum.StaticDraw);
+
+            Gl.UseProgram(program);
+
+            // Ez itt fontos:
+            Gl.DrawElements(GLEnum.Lines, (uint)lineIndices.Length, GLEnum.UnsignedInt, null);
+
+
+
             // always unbound the vertex buffer first, so no halfway results are displayed by accident
             Gl.DeleteBuffer(vertices);
             Gl.DeleteBuffer(colors);
             Gl.DeleteBuffer(indices);
             Gl.DeleteVertexArray(vao);
+
+
+            // unboundolás: vonalak
+            Gl.DeleteBuffer(lineVbo);
+            Gl.DeleteBuffer(lineEbo);
+            Gl.DeleteVertexArray(lineVao);
+
         }
     }
 }
