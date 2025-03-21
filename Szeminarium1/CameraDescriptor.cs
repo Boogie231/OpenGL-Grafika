@@ -4,15 +4,21 @@ namespace Szeminarium1_24_02_17_2
 {
     internal class CameraDescriptor
     {
-        private double DistanceToOrigin = 1;
+        private double DistanceToOrigin = 1.6; // sajat izlesnek àtirt, erdekes szog
 
-        private double AngleToZYPlane = 0;
+        private double AngleToZYPlane = 0.7;
 
-        private double AngleToZXPlane = 0;
+        private double AngleToZXPlane = 0.7;
 
         private const double DistanceScaleFactor = 1.1;
 
         private const double AngleChangeStepSize = Math.PI / 180 * 5;
+
+        private const float DistToMoveCamera = 0.1f;
+
+        private float x = 0f;
+        private float y = 0f;
+        private float z = 0f;
 
         /// <summary>
         /// Gets the position of the camera.
@@ -44,7 +50,8 @@ namespace Szeminarium1_24_02_17_2
             get
             {
                 // For the moment the camera is always pointed at the origin.
-                return Vector3D<float>.Zero;
+                Vector3D<float> vektor = new Vector3D<float>(x, y, z);
+                return vektor;
             }
         }
 
@@ -78,6 +85,37 @@ namespace Szeminarium1_24_02_17_2
         {
             DistanceToOrigin = DistanceToOrigin / DistanceScaleFactor;
         }
+
+        public void IncreaseCameraX()
+        {
+            x += DistToMoveCamera;
+        }
+
+        public void DecreaseCameraX()
+        {
+            x -= DistToMoveCamera;
+        }
+
+        public void IncreaseCameraY()
+        {
+            y += DistToMoveCamera;
+        }
+
+        public void DecreaseCameraY()
+        {
+            y -= DistToMoveCamera;
+        }
+
+        public void IncreaseCameraZ()
+        {
+            z += DistToMoveCamera;
+        }
+
+        public void DecreaseCameraZ()
+        {
+            z -= DistToMoveCamera;
+        }
+
 
         private static Vector3D<float> GetPointFromAngles(double distanceToOrigin, double angleToMinZYPlane, double angleToMinZXPlane)
         {

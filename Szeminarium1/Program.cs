@@ -151,12 +151,32 @@ namespace Szeminarium1_24_02_17_2
                 case Key.U:
                     cameraDescriptor.IncreaseZXAngle();
                     break;
-                case Key.D:
+                case Key.J:
                     cameraDescriptor.DecreaseZXAngle();
                     break;
                 case Key.Space:
                     cubeArrangementModel.AnimationEnabeld = !cubeArrangementModel.AnimationEnabeld;
                     break;
+                case Key.W:
+                    cameraDescriptor.IncreaseCameraY();
+                    break;
+                case Key.S:
+                    cameraDescriptor.DecreaseCameraY();
+                    break;
+                case Key.D:
+                    cameraDescriptor.IncreaseCameraX();
+                    break;
+                case Key.A:
+                    cameraDescriptor.DecreaseCameraX();
+                    break;
+
+                case Key.R:
+                    cameraDescriptor.IncreaseCameraZ();
+                    break;
+                case Key.F:
+                    cameraDescriptor.DecreaseCameraZ();
+                    break;
+
             }
         }
 
@@ -187,20 +207,19 @@ namespace Szeminarium1_24_02_17_2
             //DrawRevolvingCube();
 
             float a = 0.12f;
-
-            for (int i = -1; i <= 1; i ++)
+            int max = 1;
+            for (int i = -1; i <= max; i ++)
             {
-                for(int j = -1; j <= 1; j++)
+                for(int j = -1; j <= max; j++)
                 {
-                    for(int k = -1; k <= 1; k++)
+                    for(int k = -1; k <= max; k++)
                     {
-                        Draw_Rubick(glTeszt[i+1, j+1, k+1], [i*a, j*a, k*a]);
+                        Draw_Rubick(glTeszt[i + 1, k + 1 , j + 1], [i*a, -j*a, -k*a]);
 
                     }
                 }
             }
-            //Draw_Rubick(glTeszt[1, 0, 0], [0f, -a, -a]);
-            //Draw_Rubick(glTeszt[2, 0, 0], [0f, -a, -a]);
+            
             
         }
         private static unsafe void Draw_Rubick(GlCube cube, float[] translation)
@@ -281,25 +300,25 @@ namespace Szeminarium1_24_02_17_2
             // felső reteg
             glTeszt[0, 0, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, piros, zold, fekete, fekete, fekete);
             glTeszt[1, 0, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, piros, fekete, fekete, fekete, fekete);
-            glTeszt[2, 0, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, piros, fekete, kek, fekete, fekete);
+            glTeszt[2, 0, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, piros, fekete, fekete, fekete, kek);
 
             glTeszt[0, 1, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, zold, fekete, fekete, fekete);
             glTeszt[1, 1, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, fekete, fekete, fekete, fekete);
-            glTeszt[2, 1, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, fekete, fekete, fekete, fekete);
+            glTeszt[2, 1, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, fekete, fekete, fekete, kek);
             
             glTeszt[0, 2, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, zold, fekete, narancs, fekete);
             glTeszt[1, 2, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, fekete, fekete, narancs, fekete);
-            glTeszt[2, 2, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, fekete, fekete, fekete, fekete);
+            glTeszt[2, 2, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, fekete, fekete, narancs, kek);
 
 
             // kozepso reteg
             glTeszt[0, 0, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, piros, zold, fekete, fekete, fekete);
             glTeszt[1, 0, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, piros, fekete, fekete, fekete, fekete);
-            glTeszt[2, 0, 1] = GlCube.CreateCubeWithFaceColors(Gl, feher, piros, fekete, fekete, fekete, kek);
+            glTeszt[2, 0, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, piros, fekete, fekete, fekete, kek);
 
             glTeszt[0, 1, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, zold, fekete, fekete, fekete);
             glTeszt[1, 1, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, fekete, fekete, fekete);
-            glTeszt[2, 1, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, fekete, fekete, piros);
+            glTeszt[2, 1, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, fekete, fekete, kek);
 
             glTeszt[0, 2, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, zold, fekete, narancs, fekete);
             glTeszt[1, 2, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, fekete, narancs, fekete);
