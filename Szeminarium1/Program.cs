@@ -186,14 +186,27 @@ namespace Szeminarium1_24_02_17_2
             //DrawPulsingCenterCube();
             //DrawRevolvingCube();
 
-            float a = 0;
-            Draw_Rubick(glTeszt[0], [0.5f, 0.5f, a]);
-            Draw_Rubick(glTeszt[1], [a, a, a]);
-            //Draw_Rubick(glTeszt);
+            float a = 0.12f;
+
+            for (int i = -1; i <= 1; i ++)
+            {
+                for(int j = -1; j <= 1; j++)
+                {
+                    for(int k = -1; k <= 1; k++)
+                    {
+                        Draw_Rubick(glTeszt[i+1, j+1, k+1], [i*a, j*a, k*a]);
+
+                    }
+                }
+            }
+            //Draw_Rubick(glTeszt[1, 0, 0], [0f, -a, -a]);
+            //Draw_Rubick(glTeszt[2, 0, 0], [0f, -a, -a]);
+            
         }
         private static unsafe void Draw_Rubick(GlCube cube, float[] translation)
         {
             Matrix4X4<float> diamondScale = Matrix4X4.CreateScale(0.1f);
+
             Matrix4X4<float> rotx = Matrix4X4.CreateRotationX((float)Math.PI / 4f*0);
             Matrix4X4<float> rotz = Matrix4X4.CreateRotationZ((float)Math.PI / 4f * 0);
             Matrix4X4<float> rotLocY = Matrix4X4.CreateRotationY((float)cubeArrangementModel.DiamondCubeAngleOwnRevolution * 0);
@@ -246,7 +259,7 @@ namespace Szeminarium1_24_02_17_2
             Gl.UniformMatrix4(location, 1, false, (float*)&modelMatrix);
             CheckError();
         }
-        }
+        
 
         private static unsafe void SetUpObjects()
         {
@@ -257,7 +270,7 @@ namespace Szeminarium1_24_02_17_2
             float[] narancs = [1.0f, 0.5f, 0.0f, 1.0f];
             float[] cian = [0.0f, 1.0f, 1.0f, 1.0f];
             float[] sarga = [1.0f, 1.0f, 0.0f, 1.0f];
-            float[] feher = [1.0f, 1.0f, 1.0f, 1.0f];
+            float[] feher = [1.0f, 1.0f, 0.8f, 1.0f];
             float[] fekete = [0.0f, 0.0f, 0.0f, 1.0f];
 
             //glCubeCentered = GlCube.CreateCubeWithFaceColors(Gl, face1Color, face2Color, face3Color, face4Color, face5Color, face6Color);
@@ -265,19 +278,55 @@ namespace Szeminarium1_24_02_17_2
             //glCubeRotating = GlCube.CreateCubeWithFaceColors(Gl, face1Color, face2Color, face3Color, face4Color, face5Color, face6Color);
 
       
+            // felső reteg
+            glTeszt[0, 0, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, piros, zold, fekete, fekete, fekete);
+            glTeszt[1, 0, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, piros, fekete, fekete, fekete, fekete);
+            glTeszt[2, 0, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, piros, fekete, kek, fekete, fekete);
 
-            glTeszt[1] = GlCube.CreateCubeWithFaceColors(Gl, piros, zold, narancs, cian, kek, fekete);
-            glTeszt[0] = GlCube.CreateCubeWithFaceColors(Gl, piros, zold, narancs, cian, kek, fekete);
+            glTeszt[0, 1, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, zold, fekete, fekete, fekete);
+            glTeszt[1, 1, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, fekete, fekete, fekete, fekete);
+            glTeszt[2, 1, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, fekete, fekete, fekete, fekete);
             
+            glTeszt[0, 2, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, zold, fekete, narancs, fekete);
+            glTeszt[1, 2, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, fekete, fekete, narancs, fekete);
+            glTeszt[2, 2, 0] = GlCube.CreateCubeWithFaceColors(Gl, feher, fekete, fekete, fekete, fekete, fekete);
+
+
+            // kozepso reteg
+            glTeszt[0, 0, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, piros, zold, fekete, fekete, fekete);
+            glTeszt[1, 0, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, piros, fekete, fekete, fekete, fekete);
+            glTeszt[2, 0, 1] = GlCube.CreateCubeWithFaceColors(Gl, feher, piros, fekete, fekete, fekete, kek);
+
+            glTeszt[0, 1, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, zold, fekete, fekete, fekete);
+            glTeszt[1, 1, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, fekete, fekete, fekete);
+            glTeszt[2, 1, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, fekete, fekete, piros);
+
+            glTeszt[0, 2, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, zold, fekete, narancs, fekete);
+            glTeszt[1, 2, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, fekete, narancs, fekete);
+            glTeszt[2, 2, 1] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, fekete, narancs, kek);
+
+
+            // also reteg
+            glTeszt[0, 0, 2] = GlCube.CreateCubeWithFaceColors(Gl, fekete, piros, zold, sarga, fekete, fekete);
+            glTeszt[1, 0, 2] = GlCube.CreateCubeWithFaceColors(Gl, fekete, piros, fekete, sarga, fekete, fekete);
+            glTeszt[2, 0, 2] = GlCube.CreateCubeWithFaceColors(Gl, fekete, piros, fekete, sarga, fekete, kek);
+
+            glTeszt[0, 1, 2] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, zold, sarga, fekete, fekete);
+            glTeszt[1, 1, 2] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, sarga, fekete, fekete);
+            glTeszt[2, 1, 2] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, sarga, fekete, kek);
+
+            glTeszt[0, 2, 2] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, zold, sarga, narancs, fekete);
+            glTeszt[1, 2, 2] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, sarga, narancs, fekete);
+            glTeszt[2, 2, 2] = GlCube.CreateCubeWithFaceColors(Gl, fekete, fekete, fekete, sarga, narancs, kek);
 
         }
 
-        
+
 
         private static void Window_Closing()
         {
-            glCubeCentered.ReleaseGlCube();
-            glCubeRotating.ReleaseGlCube();
+            //glCubeCentered.ReleaseGlCube();
+            //glCubeRotating.ReleaseGlCube();
         }
 
         private static unsafe void SetProjectionMatrix()
