@@ -17,9 +17,12 @@ namespace Szeminarium1_24_02_17_2
 
         private static uint program;
 
+
         private static GlCube glCubeCentered;
 
         private static GlCube glCubeRotating;
+
+        private static GlCube[, ,] glTeszt= new GlCube[3, 3, 3];
 
         private const string ModelMatrixVariableName = "uModel";
         private const string ViewMatrixVariableName = "uView";
@@ -172,7 +175,7 @@ namespace Szeminarium1_24_02_17_2
 
             // GL here
             Gl.Clear(ClearBufferMask.ColorBufferBit);
-            Gl.Clear(ClearBufferMask.DepthBufferBit);
+            Gl.Clear(ClearBufferMask.DepthBufferBit); // a melysegelesseghez ezeket meg kell kerni hogy szamoljak uujra a szineket s a melysegeket
 
 
             Gl.UseProgram(program);
@@ -180,11 +183,30 @@ namespace Szeminarium1_24_02_17_2
             SetViewMatrix();
             SetProjectionMatrix();
 
-            DrawPulsingCenterCube();
+            //DrawPulsingCenterCube();
+            //DrawRevolvingCube();
 
-            DrawRevolvingCube();
-
+            float a = 0;
+            Draw_Rubick(glTeszt[0], [0.5f, 0.5f, a]);
+            Draw_Rubick(glTeszt[1], [a, a, a]);
+            //Draw_Rubick(glTeszt);
         }
+        private static unsafe void Draw_Rubick(GlCube cube, float[] translation)
+        {
+            Matrix4X4<float> diamondScale = Matrix4X4.CreateScale(0.1f);
+            Matrix4X4<float> rotx = Matrix4X4.CreateRotationX((float)Math.PI / 4f*0);
+            Matrix4X4<float> rotz = Matrix4X4.CreateRotationZ((float)Math.PI / 4f * 0);
+            Matrix4X4<float> rotLocY = Matrix4X4.CreateRotationY((float)cubeArrangementModel.DiamondCubeAngleOwnRevolution * 0);
+            Matrix4X4<float> trans = Matrix4X4.CreateTranslation(translation[0], translation[1], translation[2]);
+            Matrix4X4<float> rotGlobY = Matrix4X4.CreateRotationY((float)cubeArrangementModel.DiamondCubeAngleRevolutionOnGlobalY * 0);
+            Matrix4X4<float> modelMatrix = diamondScale * rotx * rotz * rotLocY * trans * rotGlobY;
+
+            SetModelMatrix(modelMatrix);
+            Gl.BindVertexArray(cube.Vao);
+            Gl.DrawElements(GLEnum.Triangles, cube.IndexArrayLength, GLEnum.UnsignedInt, null);
+            Gl.BindVertexArray(0);
+        }
+
 
         private static unsafe void DrawRevolvingCube()
         {
@@ -205,6 +227,7 @@ namespace Szeminarium1_24_02_17_2
         private static unsafe void DrawPulsingCenterCube()
         {
             var modelMatrixForCenterCube = Matrix4X4.CreateScale((float)cubeArrangementModel.CenterCubeScale);
+
             SetModelMatrix(modelMatrixForCenterCube);
             Gl.BindVertexArray(glCubeCentered.Vao);
             Gl.DrawElements(GLEnum.Triangles, glCubeCentered.IndexArrayLength, GLEnum.UnsignedInt, null);
@@ -223,27 +246,30 @@ namespace Szeminarium1_24_02_17_2
             Gl.UniformMatrix4(location, 1, false, (float*)&modelMatrix);
             CheckError();
         }
+        }
 
         private static unsafe void SetUpObjects()
         {
 
-            float[] face1Color = [1.0f, 0.0f, 0.0f, 1.0f];
-            float[] face2Color = [0.0f, 1.0f, 0.0f, 1.0f];
-            float[] face3Color = [0.0f, 0.0f, 1.0f, 1.0f];
-            float[] face4Color = [1.0f, 0.0f, 1.0f, 1.0f];
-            float[] face5Color = [0.0f, 1.0f, 1.0f, 1.0f];
-            float[] face6Color = [1.0f, 1.0f, 0.0f, 1.0f];
+            float[] piros = [1.0f, 0.0f, 0.0f, 1.0f];
+            float[] zold = [0.0f, 1.0f, 0.0f, 1.0f];
+            float[] kek = [0.0f, 0.0f, 1.0f, 1.0f];
+            float[] narancs = [1.0f, 0.5f, 0.0f, 1.0f];
+            float[] cian = [0.0f, 1.0f, 1.0f, 1.0f];
+            float[] sarga = [1.0f, 1.0f, 0.0f, 1.0f];
+            float[] feher = [1.0f, 1.0f, 1.0f, 1.0f];
+            float[] fekete = [0.0f, 0.0f, 0.0f, 1.0f];
 
-            glCubeCentered = GlCube.CreateCubeWithFaceColors(Gl, face1Color, face2Color, face3Color, face4Color, face5Color, face6Color);
+            //glCubeCentered = GlCube.CreateCubeWithFaceColors(Gl, face1Color, face2Color, face3Color, face4Color, face5Color, face6Color);
 
-            face1Color = [0.5f, 0.0f, 0.0f, 1.0f];
-            face2Color = [0.0f, 0.5f, 0.0f, 1.0f];
-            face3Color = [0.0f, 0.0f, 0.5f, 1.0f];
-            face4Color = [0.5f, 0.0f, 0.5f, 1.0f];
-            face5Color = [0.0f, 0.5f, 0.5f, 1.0f];
-            face6Color = [0.5f, 0.5f, 0.0f, 1.0f];
+            //glCubeRotating = GlCube.CreateCubeWithFaceColors(Gl, face1Color, face2Color, face3Color, face4Color, face5Color, face6Color);
 
-            glCubeRotating = GlCube.CreateCubeWithFaceColors(Gl, face1Color, face2Color, face3Color, face4Color, face5Color, face6Color);
+      
+
+            glTeszt[1] = GlCube.CreateCubeWithFaceColors(Gl, piros, zold, narancs, cian, kek, fekete);
+            glTeszt[0] = GlCube.CreateCubeWithFaceColors(Gl, piros, zold, narancs, cian, kek, fekete);
+            
+
         }
 
         
