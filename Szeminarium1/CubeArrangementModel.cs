@@ -27,6 +27,17 @@
         /// </summary>
         public double DiamondCubeAngleRevolutionOnGlobalY { get; private set; } = 0;
 
+        public int RotateUpperLayer = 0;
+
+        public void Rotate_Upper_clockwise()
+        {
+            RotateUpperLayer++;
+        }
+        public void Rotate_Upper_contraclockwise()
+        {
+            RotateUpperLayer--;
+        }
+
         internal void AdvanceTime(double deltaTime)
         {
             // we do not advance the simulation when animation is stopped
