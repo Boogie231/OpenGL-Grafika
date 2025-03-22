@@ -27,11 +27,15 @@
         /// </summary>
         public double DiamondCubeAngleRevolutionOnGlobalY { get; private set; } = 0;
 
-        public int RotateUpperLayer = 0;
+        private int RotateUpperLayer = 0; // pi/2 - es fordulatok száma
+
+        private double UppperLayer_step = Math.PI / 20; // radian
+
+        public double RotateUpperLayer_current = 0; // radian
 
         public void Rotate_Upper_clockwise()
         {
-            RotateUpperLayer++;
+            RotateUpperLayer++;            
         }
         public void Rotate_Upper_contraclockwise()
         {
@@ -53,6 +57,30 @@
             DiamondCubeAngleOwnRevolution = Time * 10;
 
             DiamondCubeAngleRevolutionOnGlobalY = -Time;
+        }
+
+        internal void Update_Rotation()
+        {
+            if(RotateUpperLayer_current <  RotateUpperLayer * Math.PI/2) // egyik iranyba kell forgatni
+            {
+                RotateUpperLayer_current += UppperLayer_step;
+            }
+            if(RotateUpperLayer_current > RotateUpperLayer * Math.PI/2)
+            {
+                RotateUpperLayer_current -= UppperLayer_step;
+            }
+            ////RotateUpperLayer = RotateUpperLayer % 4;
+
+            double eps = (RotateUpperLayer_current - RotateUpperLayer * Math.PI / 2);
+            if (RotateUpperLayer % 4 == 0 && Math.Abs(eps) < 0.001)
+            {
+                RotateUpperLayer = 0;
+                RotateUpperLayer_current = 0;
+
+            }
+
+            //if (RotateUpperLayer >= 5)
+            //    RotateUpperLayer = RotateUpperLayer % 4;
         }
     }
 }

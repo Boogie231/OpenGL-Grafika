@@ -196,6 +196,9 @@ namespace Szeminarium1_24_02_17_2
             // make sure it is threadsafe
             // NO GL calls
             cubeArrangementModel.AdvanceTime(deltaTime);
+
+            // TO DO
+            cubeArrangementModel.Update_Rotation();
         }
 
         private static unsafe void Window_Render(double deltaTime)
@@ -223,7 +226,7 @@ namespace Szeminarium1_24_02_17_2
                 {
                     for(int k = -1; k <= max; k++)
                     {
-                        int forg = (j == -1) ? cubeArrangementModel.RotateUpperLayer : 0;
+                        double forg = (j == -1) ? cubeArrangementModel.RotateUpperLayer_current : 0;
                         Draw_Rubick(glTeszt[i + 1, k + 1 , j + 1], [i*a, -j*a, -k*a], forg);
 
                     }
@@ -232,7 +235,7 @@ namespace Szeminarium1_24_02_17_2
             
             
         }
-        private static unsafe void Draw_Rubick(GlCube cube, float[] translation, int forg)
+        private static unsafe void Draw_Rubick(GlCube cube, float[] translation, double forg)
         {
 
             // itt egy resze csak gyom még egyelőre
@@ -243,7 +246,7 @@ namespace Szeminarium1_24_02_17_2
             //Matrix4X4<float> rotLocY = Matrix4X4.CreateRotationY((float)cubeArrangementModel.DiamondCubeAngleOwnRevolution * 0);
             Matrix4X4<float> rotLocY = Matrix4X4.CreateRotationY((float)Math.PI / 2f * 0);
             Matrix4X4<float> trans = Matrix4X4.CreateTranslation(translation[0], translation[1], translation[2]); // ez kell
-            Matrix4X4<float> rotGlobY = Matrix4X4.CreateRotationY((float)Math.PI / 2f * forg);
+            Matrix4X4<float> rotGlobY = Matrix4X4.CreateRotationY((float)forg);
             Matrix4X4<float> modelMatrix = diamondScale * rotx * rotz * rotLocY * trans * rotGlobY;
 
             SetModelMatrix(modelMatrix);
